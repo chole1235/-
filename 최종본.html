@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>마이스터고 생존 유형 테스트</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Jua&family=Gowun+Dodum&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #f4f7f6;
+            font-family: 'Gowun Dodum', sans-serif;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            background: #ffffff;
+            width: 100%;
+            max-width: 520px;
+            border-radius: 20px;
+            border: 4px solid #333;
+            box-shadow: 6px 6px 0px #333;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+        }
+
+        h1, h2, h3, .result-title, .start-btn, .btn, #q-num {
+            font-family: 'Jua', sans-serif;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            color: #ff6b6b;
+            margin-bottom: 10px;
+            line-height: 1.35;
+            word-break: keep-all;
+        }
+
+        .subtitle {
+            font-size: 1.15rem;
+            color: #555;
+            margin-bottom: 24px;
+            line-height: 1.6;
+            word-break: keep-all;
+        }
+
+        .big-emoji-box {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 18px 22px;
+            margin: 24px 0 26px;
+        }
+
+        .big-emoji-box span {
+            font-size: 4.5rem;
+            line-height: 1;
+        }
+
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 15px 16px;
+            margin: 12px 0;
+            border: 3px solid #333;
+            border-radius: 15px;
+            background-color: #ffeaa7;
+            cursor: pointer;
+            font-size: 1.15rem;
+            transition: all 0.2s;
+            text-align: left;
+            word-break: keep-all;
+            line-height: 1.5;
+        }
+
+        .btn:hover {
+            background-color: #fab1a0;
+            transform: translateY(-3px);
+            box-shadow: 4px 4px 0px #333;
+        }
+
+        .start-btn {
+            background-color: #55efc4;
+            text-align: center;
+            font-size: 1.4rem;
+        }
+
+        .start-btn:hover {
+            background-color: #00b894;
+        }
+
+        .progress-container {
+            width: 100%;
+            background-color: #eee;
+            border: 3px solid #333;
+            border-radius: 15px;
+            height: 24px;
+            margin-bottom: 20px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background-color: #74b9ff;
+            width: 0%;
+            transition: width 0.3s;
+        }
+
+        #question-screen,
+        #result-screen {
+            display: none;
+        }
+
+        #q-num {
+            font-weight: bold;
+            font-size: 1.25rem;
+            margin-bottom: 6px;
+        }
+
+
+        .result-img-box {
+            display: flex;
+            justify-content: center;
+            margin: 18px 0 22px;
+        }
+
+.result-img-box img {
+    width: 260px;
+    height: auto;
+    border-radius: 12px;   
+    border: none;  
+    object-fit: cover;
+}
+
+        .result-desc {
+            font-size: 1.03rem;
+            line-height: 1.8;
+            background: #f1f2f6;
+            padding: 15px;
+            border-radius: 15px;
+            border: 2px dashed #333;
+            margin-bottom: 20px;
+            text-align: left;
+            word-break: keep-all;
+        }
+
+        .weapon-box {
+            background: #ffeaa7;
+            border: 3px solid #333;
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+
+        .weapon-box h3 {
+            margin: 0 0 10px 0;
+            color: #d63031;
+            font-size: 1.4rem;
+        }
+
+        .weapon-tags {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .weapon-tag {
+            background: #fff;
+            border: 2px solid #333;
+            border-radius: 20px;
+            padding: 6px 12px;
+            font-weight: bold;
+            font-size: 1rem;
+            box-shadow: 2px 2px 0px #333;
+        }
+
+        .sub-result {
+            margin-top: 30px;
+            padding: 15px;
+            background: #dfe6e9;
+            border-radius: 10px;
+            font-size: 1.05rem;
+            font-weight: bold;
+            color: #2d3436;
+            border: 2px solid #333;
+            line-height: 1.6;
+            word-break: keep-all;
+        }
+
+        .sub-result-img-box {
+            display: flex;
+            justify-content: center;
+            margin-top: 12px;
+        }
+
+.sub-result-img-box img {
+    width: 180px;
+    height: auto;
+    border-radius: 12px;
+    border: none;
+    object-fit: cover;
+}
+
+        @media (max-width: 480px) {
+            body {
+                padding: 14px;
+            }
+
+            .container {
+                padding: 22px 18px;
+            }
+
+            h1 {
+                font-size: 1.9rem;
+            }
+
+            .result-title {
+                font-size: 1.9rem;
+            }
+
+            .btn {
+                font-size: 1.05rem;
+            }
+
+            #q-title {
+                font-size: 1.3rem;
+            }
+
+            .big-emoji-box {
+                gap: 14px 16px;
+            }
+
+            .big-emoji-box span {
+                font-size: 3.6rem;
+            }
+
+            .result-img-box img {
+                width: 210px;
+                height: 210px;
+            }
+
+            .sub-result-img-box img {
+                width: 150px;
+                height: 150px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- 시작 화면 -->
+    <div id="start-screen">
+        <h1>🛠️ 마이스터고<br>생존 유형 테스트 🛠️</h1>
+        <p class="subtitle">
+            나는 실습실에서 어떤 캐릭터일까?<br>
+            나의 영어 무기도 확인해 보자구!
+        </p>
+
+        <div class="big-emoji-box" aria-label="유형 동물 이모지">
+            <span>🦉</span>
+            <span>🐶</span>
+            <span>🐹</span>
+            <span>🐼</span>
+            <span>🐿️</span>
+            <span>😄</span>
+            <span>🐃</span>
+        </div>
+
+        <button class="btn start-btn" onclick="startTest()">테스트 시작하기! 🚀</button>
+    </div>
+
+    <!-- 질문 화면 -->
+    <div id="question-screen">
+        <div class="progress-container">
+            <div class="progress-bar" id="progress-bar"></div>
+        </div>
+        <div id="q-num">Q1.</div>
+        <h2 id="q-title">질문 내용</h2>
+        <div id="answers-box"></div>
+    </div>
+
+    <!-- 결과 화면 -->
+    <div id="result-screen">
+        <h2 style="margin-bottom: 5px;">당신의 실습실 자아는...</h2>
+        <div class="result-title" id="result-name">캐릭터 이름</div>
+
+        <div class="result-img-box">
+            <img id="result-img" src="" alt="메인 결과 이미지">
+        </div>
+
+        <div class="result-desc" id="result-desc">
+            팩폭 설명이 들어갑니다.
+        </div>
+
+        <div class="weapon-box">
+            <h3>⚔️ 나의 영어 무기 ⚔️</h3>
+            <div class="weapon-tags" id="result-weapons"></div>
+        </div>
+
+        <div class="sub-result" id="sub-result">
+            <div>
+                내 안에 숨겨진 또 다른 자아 (서브 유형):
+                <span id="sub-result-name" style="color: #d63031;"></span>
+            </div>
+
+            <div class="sub-result-img-box">
+                <img id="sub-result-img" src="" alt="서브 결과 이미지">
+            </div>
+        </div>
+
+        <button class="btn start-btn" style="margin-top: 30px;" onclick="location.reload()">다시 해보기 🔄</button>
+    </div>
+</div>
+
+<script>
+   const questions = [
+    { q: "실습실 문을 열고 들어왔다. 아직 아무도 시작하지 않은 상황이다. 나는?", a: [
+        { text: "\"작업 순서부터 짭니다.\" 공구와 재료를 칼같이 오와 열을 맞춰 세팅한다.", type: "분석형" },
+        { text: "\"야들아 오늘 빡세냐?\" 일단 친구들이랑 입부터 털며 분위기를 띄운다.", type: "긍정형" },
+        { text: "\"잠깐, 안전모 턱끈 꽉!\" 장비 착용 상태부터 FM대로 점검한다.", type: "안전형" },
+        { text: "\"오, 오늘 만질 기계는 이거냐?\" 새로운 장비부터 눈을 반짝이며 살펴본다.", type: "도전형" }
+    ]},
+
+    { q: "실습 중 예상 못 한 오류가 발생했다. 시간은 점점 줄어든다.", a: [
+        { text: "\"에이 몰라, 다시 돌려!\" 상남자 특: 일단 재실행부터 누르고 본다.", type: "실행형" },
+        { text: "\"될 때까지 한다.\" 시간이 걸려도 끝까지 물고 늘어져서 해결한다.", type: "끈기형" },
+        { text: "\"야 이거 아는 사람!!\" 혼자 끙끙대느니 빠르게 주변에 헬프를 친다.", type: "협력형" },
+        { text: "\"도대체 어디서 꼬인 거지?\" 처음부터 매의 눈으로 역추적해서 원인을 찾아낸다.", type: "분석형" }
+    ]},
+
+    { q: "거의 완성된 작품에서 아주 작은 오차가 발견됐다.", a: [
+        { text: "\"아 까비! 다음엔 더 잘하면 되지 뭐.\" 멘탈 털리지 않고 긍정적으로 넘긴다.", type: "긍정형" },
+        { text: "\"도면 공차 범위 내인가?\" 규정 기준에 맞는지 매뉴얼부터 다시 확인한다.", type: "안전형" },
+        { text: "\"작동 잘 되면 장땡이지.\" 기능에 문제없으면 쿨하게 그대로 제출한다.", type: "실행형" },
+        { text: "\"내 자존심이 허락 못 해.\" 기준에 안 맞으면 싹 다 엎고 처음부터 다시 만든다.", type: "분석형" }
+    ]},
+
+    { q: "조별 프로젝트가 시작됐다. 역할을 정해야 한다.", a: [
+        { text: "\"얘들아 싸우지 말고 하자.\" 팀원들 역할 조율하고 멘탈 케어하는 평화주의자.", type: "협력형" },
+        { text: "\"내가 큰 그림 그릴게.\" 전체 구조를 설계하고 방향을 지시하는 숨은 실세.", type: "분석형" },
+        { text: "\"말보단 행동이지.\" 실제 제작과 조립을 도맡아 하는 행동대장.", type: "실행형" },
+        { text: "\"내 몫은 무조건 해냄.\" 맡은 일은 밤을 새워서라도 끝까지 책임지고 완수한다.", type: "끈기형" }
+    ]},
+
+    { q: "점호 5분 전, 방이 어질러져 있다.", a: [
+        { text: "\"일단 다 때려 넣어!\" 눈에 안 보이게 치우는 기발하고 빠른 방법을 찾아낸다.", type: "도전형" },
+        { text: "\"각 잡아!\" 점호 규정에 맞게 빛의 속도로 FM 정리를 시전한다.", type: "안전형" },
+        { text: "\"야 나 다했어. 도와줄게.\" 내 거 다 하고 친구들 거까지 도와주는 오지라퍼.", type: "협력형" },
+        { text: "\"난 이미 다 치웠지롱.\" 평소에 꾸준히 정리해둬서 타격감 제로.", type: "끈기형" }
+    ]},
+
+    { q: "학교에 새로운 실습 장비가 들어왔다.", a: [
+        { text: "\"매뉴얼 어딨어?\" 어떤 원리로 작동하는지 제원표와 설명서부터 정독한다.", type: "분석형" },
+        { text: "\"이거 다른 식으로도 써먹을 수 있지 않나?\" 기본 말고 새로운 활용법부터 궁금해진다.", type: "도전형" },
+        { text: "\"비싼 거니까 조심해.\" 혹시라도 고장 낼까 봐 안전 수칙부터 확인한다.", type: "안전형" },
+        { text: "\"몸으로 익혀야지!\" 설명보다 직접 만져보면서 사용법을 익힌다.", type: "실행형" }
+    ]},
+
+    { q: "중요한 면접을 앞두고 있다.", a: [
+        { text: "면접은 기세다! 핵심 키워드만 쓱 보고 현장에서 애드리브로 승부한다.", type: "실행형" },
+        { text: "친구들이랑 모의 면접 스터디 파서 서로 살벌하게 피드백 날려주며 훈련한다.", type: "협력형" },
+        { text: "예상 질문 100개 뽑아서 입에 붙을 때까지 무한 반복 연습한다.", type: "끈기형" },
+        { text: "기업 뉴스, 인재상 싹 다 분석해서 예상 꼬리질문까지 완벽하게 정리한다.", type: "분석형" }
+    ]},
+
+    { q: "친구가 실수로 장비를 망가뜨렸다.", a: [
+        { text: "\"ㅋㅋㅋㅋㅋ 표정 봐라. 쌤한테 넌 혼났다ㅋㅋ\" 신나게 놀리며 긴장 풀어줌.", type: "긍정형" },
+        { text: "\"근데 왜 부서진 거야? 힘 조절 실패?\" 직업병 발동, 옆에서 원인을 분석해 준다.", type: "분석형" },
+        { text: "\"빨리 수습하자. 창고 가서 부품 가져올게.\" 행동이 먼저 나가는 해결사.", type: "실행형" },
+        { text: "\"헐 ㅠ 많이 쫄았겠다.\" 일단 친구의 놀란 멘탈부터 챙겨주는 마더 테레사.", type: "협력형" }
+    ]},
+
+    { q: "마감 직전, 더 좋은 아이디어가 떠올랐다.", a: [
+        { text: "\"망해도 고!\" 마감 직전이라도 더 쩔 것 같은 새로운 방법을 시도한다.", type: "도전형" },
+        { text: "\"이대로 내면 찝찝해!\" 완성도를 위해 미친 속도로 뜯어고쳐서 퀄리티를 높인다.", type: "분석형" },
+        { text: "\"아쉽지만 이건 다음 캡스톤 때 써먹어야지.\" 아이디어 노트에 묵묵히 박제해둔다.", type: "끈기형" },
+        { text: "\"지금 건드리면 대참사다.\" 안전빵으로 기존 계획을 유지해서 제출한다.", type: "안전형" }
+    ]},
+
+    { q: "처음 해보는 작업을 맡았다.", a: [
+        { text: "\"이렇게도 해보고 저렇게도 해보자.\" 남들이 안 하는 다양한 방법을 시도해 본다.", type: "도전형" },
+        { text: "\"사수님, 이건 어떤 원리입니까?\" 궁금증 못 참고 질문 폭격기 빙의해서 원리를 파헤친다.", type: "분석형" },
+        { text: "\"어떻게든 되겠지!\" 사수님 어깨너머로 보고 일단 내 몸으로 부딪혀본다.", type: "실행형" },
+        { text: "\"작업 표준서 어딨지?\" 절차와 현장 안전 규정부터 FM대로 파악한다.", type: "안전형" }
+    ]},
+
+    { q: "쉬는 날 친구가 도움을 요청했다.", a: [
+        { text: "\"야 도움은 무슨, 끝나고 피방이나 가자.\" 오히려 친구를 꼬셔서 놀러 간다.", type: "긍정형" },
+        { text: "\"하.. 피곤한데.. 그래 가자.\" 투덜대면서도 기꺼이 학교로 끌려가 주는 의리남.", type: "협력형" },
+        { text: "\"내 계획표에 없는 일정이다.\" 내 루틴과 효율이 먼저, 칼같이 거절한다.", type: "분석형" },
+        { text: "\"그럼 난 옆에서 필기 공부해야지.\" 친구 도와주러 가서 내 할 일도 묵묵히 한다.", type: "끈기형" }
+    ]},
+
+    { q: "나의 작업 결과물 스타일은?", a: [
+        { text: "\"남들 다 하는 건 재미없지.\" 결과물에 나만의 새로운 시도를 한 스푼 섞는다.", type: "도전형" },
+        { text: "\"이건 예술 작품이야.\" 기계가 뽑은 것처럼 오차 없이 칼같이 일정한 완벽한 퀄리티.", type: "분석형" },
+        { text: "\"튼튼하면 장땡이지!\" 좀 삐뚤빼뚤해도 절대 안 부서지게 꽉꽉 채워 넣는다.", type: "실행형" },
+        { text: "\"딱 커트라인만 넘기자.\" 도면의 최소 요구 조건과 규정만 맞춘다.", type: "안전형" }
+    ]},
+
+    { q: "친구들이 보는 나의 모습은?", a: [
+        { text: "\"가끔 보면 약간 도라이(?) 같아ㅋㅋ\" 특유의 밝음과 돌발 행동으로 반 분위기 하드캐리.", type: "긍정형" },
+        { text: "\"걸어 다니는 전공책 + 팩폭러.\" 모르는 거 물어보면 막힘없이 논리적으로 설명해 줌.", type: "분석형" },
+        { text: "\"우리 엄마인 줄.\" 밥 먹었냐 묻고 이것저것 잘 챙겨줘서 같이 있으면 편함.", type: "협력형" },
+        { text: "\"너는 진짜 든든한 국밥 같아.\" 언제나 변함없이 꾸준하고 믿음직한 친구.", type: "끈기형" }
+    ]},
+
+    { q: "회사에 입사했을 때, 내가 더 칭찬받고 싶은 모습은?", a: [
+        { text: "\"자네가 팀에 오고 나서 분위기가 너무 좋아졌어! 우리 팀의 보배야!\"", type: "협력형" },
+        { text: "\"어쩜 이렇게 매뉴얼대로 안전하게 작업하나? 모범 사원이야!\"", type: "안전형" },
+        { text: "\"어려운 문제도 완벽하게 해결했네! 자네가 우리 팀 브레인이야!\"", type: "분석형" },
+        { text: "\"남들이 머리 굴릴 때 행동으로 보여주는구만! 추진력 하나는 최고야!\"", type: "실행형" }
+    ]},
+
+    { q: "합격 소식을 들었다.", a: [
+        { text: "\"와!!! 찢었다!!! 오늘 피방 내가 쏜다!!!\" 동네방네 소리 지르며 밝게 기뻐한다.", type: "긍정형" },
+        { text: "\"이제 시작이지.\" 합격에 만족하지 않고 회사 가서 보여줄 더 큰 도전을 준비한다.", type: "도전형" },
+        { text: "\"휴... 예상대로군.\" 겉으론 내색 안 하고 차분하게 첫 출근 루트와 필요한 것들을 계획한다.", type: "분석형" },
+        { text: "부모님, 선생님들한테 장문의 카톡 돌리며 감사 인사를 전하고 기쁨을 나눈다.", type: "협력형" }
+    ]}
+];
+    const resultsData = {
+        "분석형": {
+            name: "명탐정 부엉이",
+            image: "./owl.jpg",
+            desc: "코딩 에러나 도면 오차(0.01mm)가 생기면 원인을 찾을 때까지 화장실도 안 가는 피곤한 완벽주의자 뇌섹남. 대충 넘어가는 꼴을 못 봐서 남들 쉴 때 두 배로 끙끙대지만, 덕분에 네 결과물은 불량률 제로(0)에 수렴해! 차가운 팩트 폭격기라 가끔 친구들이 뼈 맞고 아파하지만, 막상 실습하다가 진짜 노답 상황 터지면 애들이 구세주처럼 제일 먼저 찾는 브레인이 바로 너임. 삼성전자, 반도체 회사에서 제발 와달라고 환장할 극강의 컨트롤러!",
+            weapons: ["Analytical", "Logical", "Problem-solving ability", "Attention to detail", "Systematically"]
+        },
+        "협력형": {
+            name: "보살 리트리버",
+            image: "./retriever.jpg",
+            desc: "호구와 천사를 오가는 마이스터고 마더 테레사. '애들아 제발 단톡방 좀 봐줘...' 속으로 삭히며 결국 네가 밤새워서 조립 다 해놓고 PPT까지 만드는 든든한 국밥 같은 친구. 무임승차하는 애들을 멱살 잡고 끌고 가면서도 끝까지 좋게좋게 웃어넘김. 근데 또 점수 잘 나오면 팀원들한테 공을 돌리는 진정한 천사견이라 어딜 가도 사랑받을 팀플의 정석!",
+            weapons: ["Collaborative", "Communicative", "Supportive", "Teamwork skills", "Cooperatively"]
+        },
+        "끈기형": {
+            name: "밤샘 요정 햄스터",
+            image: "./hamster.jpg",
+            desc: "좀비처럼 살아남아 기어코 목표를 이루는 끈기의 아이콘. 남들 다 피방 가고 롤 하러 갈 때 묵묵히 실습실에 남아서 자격증 준비하는 무서운 독종임. 남들보다 화려한 말빨이나 눈치는 좀 부족해 보일지 몰라도, 한 번 물면 절대 놓지 않는 미친 끈기가 네 최대 무기. 느려 보여도 결국 자격증 싹 다 따고, 취업도 대기업으로 제일 먼저 스윽 가버리는 K-직장인 최고 인재상!",
+            weapons: ["Persistent", "Responsible", "Strong work ethic", "Consistently", "Reliable"]
+        },
+        "도전형": {
+            name: "초롱초롱 랫서팬더",
+            image: "./panda.jpg",
+            desc: "\"이거 누르면 어떻게 됨?\" 사고뭉치와 천재를 오가는 친구. 수천만 원짜리 비싼 장비의 '절대 만지지 마시오' 버튼을 누르기 직전의 광기 어린 눈을 가졌음. 규칙대로만 하는 걸 세상 지루해하고 뭐든 뜯어봐야 직성이 풀림. 스펀지 같은 미친 습득력으로 금방 배우지만, 대형 사고 칠까 봐 쌤들이 항상 주시하는 요주의 인물 1순위. 근데 이런 애들이 나중에 크게 성공함.",
+            weapons: ["Adaptable", "Creative", "Innovative", "Learning ability", "Actively"]
+        },
+        "안전형": {
+            name: "FM 미어캣",
+            image: "./meerkat.jpg",
+            desc: "내 목숨은 내가 지킨다, 생존율 200% 방어력 만렙. 실습 전에 안전모, 절연장갑까지 풀착장하고 굴러가기 직전의 모습. \"야 너 그러다 진짜 크게 다쳐!!\" 규정 위반하는 꼴을 절대 못 보고 잔소리 폭격함. 남들은 쫄보라 놀려도, 넌 내 목숨과 원칙이 가장 소중한 뚝심 있는 상남자임. 포스코나 한수원 면접관들이 관상만 보고 프리패스 시켜줄 현장 안전 마스터!",
+            weapons: ["Safety-conscious", "Responsible", "Risk-aware", "Safety awareness", "Follow safety rules"]
+        },
+        "긍정형": {
+            name: "에너자이저 쿼카",
+            image: "./quokka.jpg",
+            desc: "멘탈 붕괴 현장에서도 V자를 그리는 타격감 제로의 사나이. 기숙사에서 사감 쌤한테 혼나도 뒤돌아서 쪼개는 강철 멘탈. \"에이 뭐 어때~ 매점이나 가자!\" 시험 망치고 실습 실수해도 5분 만에 훌훌 터는 미친 회복력을 가짐. 특유의 넉살과 텐션으로 반 분위기를 하드캐리함. 나중에 회사 가서 아무리 무서운 꼰대 부장을 만나도 네 해맑음 한방이면 다 무장해제됨.",
+            weapons: ["Energetic", "Optimistic", "Positive", "Supportive", "Enthusiastically"]
+        },
+        "실행형": {
+            name: "노빠꾸 버팔로",
+            image: "./buffalo.jpg",
+            desc: "생각은 짧고 행동은 빛보다 빠른 실전파 상남자. 매뉴얼 책은 냄비 받침으로나 쓰고, 스패너 하나 들고 당장 기계 속으로 돌진하는 행동대장. \"이론이 뭐가 중요해? 깎아보면 알지!\" 머리로 계산하기 전에 일단 몸이 먼저 나감. 가끔 앞뒤 안 재고 직진하다가 장렬하게 실수하지만, 실행력 하나는 전교 1등임. 현장 반장님들이 \"저 친구 싹수가 마음에 든다\"며 젤 예뻐할 행동파!",
+            weapons: ["Proactive", "Practical", "Execution ability", "Take initiative", "Actively"]
+        }
+    };
+
+    let currentIdx = 0;
+
+    let scores = {
+        "안전형": 0,
+        "도전형": 0,
+        "분석형": 0,
+        "긍정형": 0,
+        "실행형": 0,
+        "협력형": 0,
+        "끈기형": 0
+    };
+
+    function startTest() {
+        document.getElementById("start-screen").style.display = "none";
+        document.getElementById("question-screen").style.display = "block";
+        nextQuestion();
+    }
+
+    function nextQuestion() {
+        if (currentIdx >= questions.length) {
+            showResult();
+            return;
+        }
+
+        const q = questions[currentIdx];
+        document.getElementById("q-num").innerText = `Q${currentIdx + 1}.`;
+        document.getElementById("q-title").innerText = q.q;
+
+        const progress = (currentIdx / questions.length) * 100;
+        document.getElementById("progress-bar").style.width = progress + "%";
+
+        const answersBox = document.getElementById("answers-box");
+        answersBox.innerHTML = "";
+
+        q.a.forEach(answer => {
+            const btn = document.createElement("button");
+            btn.className = "btn";
+            btn.innerText = answer.text;
+            btn.onclick = () => {
+                scores[answer.type] += 1;
+                currentIdx++;
+                nextQuestion();
+            };
+            answersBox.appendChild(btn);
+        });
+    }
+
+    function showResult() {
+        document.getElementById("question-screen").style.display = "none";
+        document.getElementById("result-screen").style.display = "block";
+
+        const sortedTypes = Object.keys(scores).sort((a, b) => scores[b] - scores[a]);
+
+        const mainType = sortedTypes[0];
+        const subType = sortedTypes[1];
+
+        const mainResult = resultsData[mainType];
+        const subResult = resultsData[subType];
+
+        document.getElementById("result-name").innerText = mainResult.name;
+
+        const resultImg = document.getElementById("result-img");
+        resultImg.src = mainResult.image;
+        resultImg.alt = mainResult.name;
+        resultImg.onerror = function () {
+            this.src = "https://via.placeholder.com/240?text=No+Image";
+        };
+
+        document.getElementById("result-desc").innerText = mainResult.desc;
+
+        const weaponsBox = document.getElementById("result-weapons");
+        weaponsBox.innerHTML = "";
+
+        mainResult.weapons.forEach(word => {
+            const span = document.createElement("span");
+            span.className = "weapon-tag";
+            span.innerText = word;
+            weaponsBox.appendChild(span);
+        });
+
+        document.getElementById("sub-result-name").innerText = subResult.name;
+
+        const subResultImg = document.getElementById("sub-result-img");
+        subResultImg.src = subResult.image;
+        subResultImg.alt = subResult.name;
+        subResultImg.onerror = function () {
+            this.src = "https://via.placeholder.com/170?text=No+Image";
+        };
+
+        document.getElementById("progress-bar").style.width = "100%";
+    }
+</script>
+
+</body>
+</html>
